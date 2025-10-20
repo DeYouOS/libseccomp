@@ -1,0 +1,56 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+/* 基本头文件检查 - Android 都有 */
+#define HAVE_ASM_UNISTD_H 1
+#define HAVE_BYTESWAP_H 1
+#define HAVE_STDDEF_H 1
+#define HAVE_STDINT_H 1
+#define HAVE_STDLIB_H 1
+#define HAVE_STRING_H 1
+#define HAVE_SYS_IOCTL_H 1
+#define HAVE_SYS_PRCTL_H 1
+#define HAVE_SYS_STAT_H 1
+#define HAVE_SYS_SYSCALL_H 1
+#define HAVE_SYS_TYPES_H 1
+#define HAVE_UNISTD_H 1
+
+/* Linux 特定头文件 */
+#define HAVE_LINUX_AUDIT_H 1
+#define HAVE_LINUX_SECCOMP_H 1
+#define HAVE_LINUX_FILTER_H 1
+
+/* 系统调用检查 */
+#define HAVE_SECCOMP 1
+#define HAVE_PRCTL 1
+
+/* 函数检查 */
+#define HAVE_MEMFD_CREATE 0  /* Android 可能没有 */
+
+/* 编译器内置函数 */
+#define HAVE___BUILTIN_BSWAP16 1
+#define HAVE___BUILTIN_BSWAP32 1
+#define HAVE___BUILTIN_BSWAP64 1
+#define HAVE___BUILTIN_EXPECT 1
+
+/* 类型检查 */
+#define HAVE___UINT128_T 0   /* 32位 Android 没有 */
+
+/* 版本信息 */
+#define VERSION "2.5.4"
+#define PACKAGE_VERSION "2.5.4"
+#define PACKAGE_STRING "libseccomp 2.5.4"
+
+#define SCMP_VER_MAJOR 2
+#define SCMP_VER_MINOR 5
+#define SCMP_VER_MICRO 4
+
+/* 内联支持 */
+#ifndef __cplusplus
+# define inline __inline__
+#endif
+
+/* restrict 支持 */
+#define restrict __restrict
+
+#endif /* CONFIG_H */
