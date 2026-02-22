@@ -31,200 +31,15 @@ file(WRITE ${GENERATED_SYSCALLS} "
 #include <seccomp.h>
 #include <string.h>
 
-/* 多平台系统调用号定义 */
-#if defined(__aarch64__)
-    /* AArch64 系统调用号 */
-    #ifndef __NR_openat
-    #define __NR_openat   56
-    #endif
-    #ifndef __NR_close
-    #define __NR_close    57
-    #endif
-    #ifndef __NR_read
-    #define __NR_read     63
-    #endif
-    #ifndef __NR_write
-    #define __NR_write    64
-    #endif
-    #ifndef __NR_fstat
-    #define __NR_fstat    80
-    #endif
-    #ifndef __NR_fcntl
-    #define __NR_fcntl    25
-    #endif
-    #ifndef __NR_ioctl
-    #define __NR_ioctl    29
-    #endif
-
-#elif defined(__arm__)
-    /* ARM 32-bit 系统调用号 */
-    #ifndef __NR_openat
-    #define __NR_openat   322
-    #endif
-    #ifndef __NR_close
-    #define __NR_close    6
-    #endif
-    #ifndef __NR_read
-    #define __NR_read     3
-    #endif
-    #ifndef __NR_write
-    #define __NR_write    4
-    #endif
-    #ifndef __NR_fstat
-    #define __NR_fstat    108
-    #endif
-    #ifndef __NR_fcntl
-    #define __NR_fcntl    55
-    #endif
-    #ifndef __NR_ioctl
-    #define __NR_ioctl    54
-    #endif
-
-#elif defined(__i386__)
-    /* x86 系统调用号 */
-    #ifndef __NR_openat
-    #define __NR_openat   295
-    #endif
-    #ifndef __NR_close
-    #define __NR_close    6
-    #endif
-    #ifndef __NR_read
-    #define __NR_read     3
-    #endif
-    #ifndef __NR_write
-    #define __NR_write    4
-    #endif
-    #ifndef __NR_fstat
-    #define __NR_fstat    108
-    #endif
-    #ifndef __NR_fcntl
-    #define __NR_fcntl    55
-    #endif
-    #ifndef __NR_ioctl
-    #define __NR_ioctl    54
-    #endif
-
-#elif defined(__x86_64__)
-    /* x86_64 系统调用号 */
-    #ifndef __NR_openat
-    #define __NR_openat   257
-    #endif
-    #ifndef __NR_close
-    #define __NR_close    3
-    #endif
-    #ifndef __NR_read
-    #define __NR_read     0
-    #endif
-    #ifndef __NR_write
-    #define __NR_write    1
-    #endif
-    #ifndef __NR_fstat
-    #define __NR_fstat    5
-    #endif
-    #ifndef __NR_fcntl
-    #define __NR_fcntl    72
-    #endif
-    #ifndef __NR_ioctl
-    #define __NR_ioctl    16
-    #endif
-
-#else
-    /* 默认使用 AArch64 */
-    #ifndef __NR_openat
-    #define __NR_openat   56
-    #endif
-    #ifndef __NR_close
-    #define __NR_close    57
-    #endif
-    #ifndef __NR_read
-    #define __NR_read     63
-    #endif
-    #ifndef __NR_write
-    #define __NR_write    64
-    #endif
-    #ifndef __NR_fstat
-    #define __NR_fstat    80
-    #endif
-    #ifndef __NR_fcntl
-    #define __NR_fcntl    25
-    #endif
-    #ifndef __NR_ioctl
-    #define __NR_ioctl    29
-    #endif
-#endif
-
-/* 其他通用系统调用号 */
-#ifndef __NR_mmap
-#define __NR_mmap     222
-#endif
-
-#ifndef __NR_munmap
-#define __NR_munmap   215
-#endif
-
-#ifndef __NR_brk
-#define __NR_brk      214
-#endif
-
-#ifndef __NR_clone
-#define __NR_clone    220
-#endif
-
-#ifndef __NR_execve
-#define __NR_execve   221
-#endif
-
-#ifndef __NR_exit
-#define __NR_exit     93
-#endif
-
-#ifndef __NR_exit_group
-#define __NR_exit_group 94
-#endif
-
 /* 系统调用解析函数 */
 const char *syscall_resolve_name(int num) {
     switch(num) {
-        /* 文件操作 */
-        case __NR_openat: return \"openat\";
-        case __NR_close: return \"close\";
-        case __NR_read: return \"read\";
-        case __NR_write: return \"write\";
-        case __NR_fstat: return \"fstat\";
-        case __NR_fcntl: return \"fcntl\";
-        case __NR_ioctl: return \"ioctl\";
-        case __NR_mmap: return \"mmap\";
-        case __NR_munmap: return \"munmap\";
-        case __NR_brk: return \"brk\";
-
-        /* 进程管理 */
-        case __NR_clone: return \"clone\";
-        case __NR_execve: return \"execve\";
-        case __NR_exit: return \"exit\";
-        case __NR_exit_group: return \"exit_group\";
-
         default: return NULL;
     }
 }
 
 int syscall_resolve_num(const char *name) {
     if (name == NULL) return -1;
-
-    if (strcmp(name, \"openat\") == 0) return __NR_openat;
-    if (strcmp(name, \"close\") == 0) return __NR_close;
-    if (strcmp(name, \"read\") == 0) return __NR_read;
-    if (strcmp(name, \"write\") == 0) return __NR_write;
-    if (strcmp(name, \"fstat\") == 0) return __NR_fstat;
-    if (strcmp(name, \"fcntl\") == 0) return __NR_fcntl;
-    if (strcmp(name, \"ioctl\") == 0) return __NR_ioctl;
-    if (strcmp(name, \"mmap\") == 0) return __NR_mmap;
-    if (strcmp(name, \"munmap\") == 0) return __NR_munmap;
-    if (strcmp(name, \"brk\") == 0) return __NR_brk;
-    if (strcmp(name, \"clone\") == 0) return __NR_clone;
-    if (strcmp(name, \"execve\") == 0) return __NR_execve;
-    if (strcmp(name, \"exit\") == 0) return __NR_exit;
-    if (strcmp(name, \"exit_group\") == 0) return __NR_exit_group;
-
     return -1;
 }
 
@@ -242,20 +57,6 @@ int syscall_iterate(unsigned int arch, void *data,
         int num;
         const char *name;
     } syscalls[] = {
-        {__NR_openat, \"openat\"},
-        {__NR_close, \"close\"},
-        {__NR_read, \"read\"},
-        {__NR_write, \"write\"},
-        {__NR_fstat, \"fstat\"},
-        {__NR_fcntl, \"fcntl\"},
-        {__NR_ioctl, \"ioctl\"},
-        {__NR_mmap, \"mmap\"},
-        {__NR_munmap, \"munmap\"},
-        {__NR_brk, \"brk\"},
-        {__NR_clone, \"clone\"},
-        {__NR_execve, \"execve\"},
-        {__NR_exit, \"exit\"},
-        {__NR_exit_group, \"exit_group\"},
         {-1, NULL}
     };
 
